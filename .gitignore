@@ -48,3 +48,4 @@ lerna-debug.log*
 # Prisma
 /prisma/.env
 /prisma/migrations/dev
+/prisma/migrations_old

@@ -82,6 +82,31 @@ CREATE TABLE "RefreshToken" (
     CONSTRAINT "RefreshToken_pkey" PRIMARY KEY ("id")
 );
 
+-- CreateTable
+CREATE TABLE "EmailVerification" (
+    "id" TEXT NOT NULL,
+    "email" TEXT NOT NULL,
+    "code" TEXT NOT NULL,
+    "expiresAt" TIMESTAMP(3) NOT NULL,
+    "verifiedAt" TIMESTAMP(3),
+    "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+
+    CONSTRAINT "EmailVerification_pkey" PRIMARY KEY ("id")
+);
+
+-- CreateTable
+CREATE TABLE "PasswordReset" (
+    "id" TEXT NOT NULL,
+    "userId" TEXT NOT NULL,
+    "email" TEXT NOT NULL,
+    "token" TEXT NOT NULL,
+    "expiresAt" TIMESTAMP(3) NOT NULL,
+    "usedAt" TIMESTAMP(3),
+    "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+
+    CONSTRAINT "PasswordReset_pkey" PRIMARY KEY ("id")
+);
+
 -- CreateIndex
 CREATE UNIQUE INDEX "User_email_key" ON "User"("email");
 
@@ -93,6 +118,18 @@ CREATE UNIQUE INDEX "Permission_name_key" ON "Permission"("name");
 
 -- CreateIndex
 CREATE UNIQUE INDEX "RefreshToken_token_key" ON "RefreshToken"("token");
+
+-- CreateIndex
+CREATE INDEX "EmailVerification_email_idx" ON "EmailVerification"("email");
+
+-- CreateIndex
+CREATE UNIQUE INDEX "PasswordReset_token_key" ON "PasswordReset"("token");
+
+-- CreateIndex
+CREATE INDEX "PasswordReset_email_idx" ON "PasswordReset"("email");
+
+-- CreateIndex
+CREATE INDEX "PasswordReset_token_idx" ON "PasswordReset"("token");
 
 -- AddForeignKey
 ALTER TABLE "UserRole" ADD CONSTRAINT "UserRole_userId_fkey" FOREIGN KEY ("userId") REFERENCES "User"("id") ON DELETE CASCADE ON UPDATE CASCADE;
@@ -111,3 +148,6 @@ ALTER TABLE "Otp" ADD CONSTRAINT "Otp_userId_fkey" FOREIGN KEY ("userId") REFERE
 
 -- AddForeignKey
 ALTER TABLE "RefreshToken" ADD CONSTRAINT "RefreshToken_userId_fkey" FOREIGN KEY ("userId") REFERENCES "User"("id") ON DELETE CASCADE ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "PasswordReset" ADD CONSTRAINT "PasswordReset_userId_fkey" FOREIGN KEY ("userId") REFERENCES "User"("id") ON DELETE CASCADE ON UPDATE CASCADE;

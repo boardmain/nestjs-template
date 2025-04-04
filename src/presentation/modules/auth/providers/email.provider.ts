@@ -23,6 +23,18 @@ export class EmailProvider implements OnModuleInit {
       if (this.configService.get('NODE_ENV') !== 'production') {
         const testAccount = await nodemailer.createTestAccount();
         
+        // const testAccount = await nodemailer.createTestAccount();
+
+        this.transporter = nodemailer.createTransport({
+          host: this.configService.get('SMTP_TEST_HOST'),
+          port: this.configService.get('SMTP_TEST_PORT'),
+          secure: false,
+          auth: {
+            user: this.configService.get('SMTP_TEST_USER'),
+            pass: this.configService.get('SMTP_TEST_PASSWORD'),
+          },
+        });
+        
         this.transporter = nodemailer.createTransport({
           host: 'smtp.ethereal.email',
           port: 587,
